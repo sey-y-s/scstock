@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class StockMovementItem extends Model
 {
     protected $fillable = [
-        'stock_movement_id', 'product_id', 'quantity_in_base_unit',
-        'entered_quantity', 'entered_unit', 'unit_price'
+        'stock_movement_id',
+        'product_id',
+        'quantity',
+        'unit_price'
     ];
 
     public function stockMovement()

@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'role' => 'admin',
-            'password' => bcrypt('00000000'),
+            'password' => bcrypt('12345432'),
         ]);
 
         DB::table('product_categories')->insert([
@@ -35,10 +35,73 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('packaging_types')->insert([
-            ['name' => 'Carton', 'code' => 'carton'],
+            ['name' => 'Carton(s)', 'code' => 'carton'],
             ['name' => 'Sac 50kg', 'code' => 'sac50'],
             ['name' => 'Sac 100kg', 'code' => 'sac100'],
             ['name' => 'Pièces', 'code' => 'piece'],
+        ]);
+
+        DB::table('products')->insert([
+            [
+                'name' => 'Déo Fresh',
+                'reference' => 'FR-001',
+                'description' => 'Déodorant longue durée',
+                'category_id' => 1,
+                'packaging_type_id' => 1,
+                'purchase_price' => 5000,
+            ],
+            [
+                'name' => 'Parfum Floral',
+                'reference' => 'FR-002',
+                'description' => 'Parfum sans alcool aux notes florales',
+                'category_id' => 2,
+                'packaging_type_id' => 1,
+                'purchase_price' => 15000,
+            ],
+            [
+                'name' => 'Gel Douche Revitalisant',
+                'reference' => 'FR-003',
+                'description' => 'Gel douche pour une peau revitalisée',
+                'category_id' => 3,
+                'packaging_type_id' => 1,
+                'purchase_price' => 8000,
+            ],
+            [
+                'name' => 'Déo Sport',
+                'reference' => 'FR-004',
+                'description' => 'Déodorant pour sportifs',
+                'category_id' => 1,
+                'packaging_type_id' => 1,
+                'purchase_price' => 6000,
+            ],
+            [
+                'name' => 'Parfum Boisé',
+                'reference' => 'FR-005',
+                'description' => 'Parfum sans alcool aux notes boisées',
+                'category_id' => 2,
+                'packaging_type_id' => 1,
+                'purchase_price' => 16000,
+            ],
+            [
+                'name' => 'Gel Douche Hydratant',
+                'reference' => 'FR-006',
+                'description' => 'Gel douche pour une hydratation optimale',
+                'category_id' => 3,
+                'packaging_type_id' => 1,
+                'purchase_price' => 9000,
+            ],
+        ]);
+
+        DB::table('customers')->insert([
+            ['name' => 'Client A'],
+            ['name' => 'Client B'],
+            ['name' => 'Client C'],
+        ]);
+
+        DB::table('suppliers')->insert([
+            ['name' => 'Fournisseur X'],
+            ['name' => 'Fournisseur Y'],
+            ['name' => 'Fournisseur Z'],
         ]);
     }
 }

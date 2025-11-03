@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Products/Index', [
-            'products' => Product::with(['category', 'packagingType'])
+            'products' => Product::with(['category', 'packagingType', 'stocks'])
                 ->latest()
                 ->get()
         ]);
@@ -117,7 +117,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        // Supprimer l'image si elle existe
+        // Suppression image
         if ($product->image_url) {
             $imagePath = str_replace('/storage/', '', $product->image_url);
             Storage::disk('public')->delete($imagePath);
@@ -127,5 +127,54 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')
             ->with('success', 'Produit supprimé avec succès.');
+    }
+
+    public function searchProducts(Request $request)
+    {
+        $query = $request->get('q');
+        $warehouseId = $request->get('warehouse_id');
+        $movementType = $request->get('movement_type', 'out');
+
+        $products = Product::with(['packagingType', 'stocks' => function($q) use ($warehouseId) {
+                if ($warehouseId) {
+                    $q->where('warehouse_id', $warehouseId);
+                }
+            }])
+            ->where('is_active', true)
+            ->where(function($q) use ($query) {
+                $q->where('reference', 'LIKE', "%{$query}%")
+                ->orWhere('name', 'LIKE', "%{$query}%");
+            });
+
+        // Pour les mouvements de sortie/transfert, ne montrer que les produits en stock
+        if (in_array($movementType, ['out', 'transfer']) && $warehouseId) {
+            $products->whereHas('stocks', function($q) use ($warehouseId) {
+                $q->where('warehouse_id', $warehouseId)
+                ->where('quantity', '>', 0);
+            });
+        }
+
+        $products = $products->limit(20)->get()->map(function($product) use ($warehouseId, $movementType) {
+            $stock = $warehouseId ?
+                $product->stocks->where('warehouse_id', $warehouseId)->first() :
+                null;
+
+            $currentStock = $stock ? floatval($stock->quantity) : 0;
+
+            return [
+                'id' => $product->id,
+                'reference' => $product->reference,
+                'name' => $product->name,
+                'packaging_type' => $product->packagingType->name,
+                'purchase_price' => $product->purchase_price,
+                'priceB' => $product->priceB,
+                'image_url' => $product->image_url,
+                'current_stock' => $currentStock,
+                'available' => $movementType === 'in' ? true : $currentStock > 0,
+                'low_stock_alert' => $product->low_stock_alert
+            ];
+        });
+
+        return response()->json($products);
     }
 }

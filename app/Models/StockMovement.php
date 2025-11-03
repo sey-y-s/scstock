@@ -11,21 +11,24 @@ class StockMovement extends Model
         'supplier_id', 'customer_id', 'user_id', 'notes', 'movement_date'
     ];
 
+    protected $appends = ['total_quantity', 'total_value'];
+
     protected $casts = [
-        'movement_date' => 'datetime'
+        'movement_date' => 'datetime',
+        'status' => 'string' // draft, completed, cancelled
     ];
 
     public static function generateReference($type)
     {
         $prefixes = [
             'in' => 'APP',
-            'out' => 'VT', 
+            'out' => 'VT',
             'transfer' => 'TRF'
         ];
-        
+
         $prefix = $prefixes[$type] ?? 'MV';
         $year = date('Y');
-        
+
         $lastMovement = self::where('reference', 'like', "{$prefix}-{$year}-%")
             ->orderBy('reference', 'desc')
             ->first();

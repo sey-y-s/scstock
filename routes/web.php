@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
@@ -19,21 +20,40 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
     Route::resource('products', ProductController::class);
-    Route::resource('stock-movements', StockMovementController::class);
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
+    Route::resource('stocks', StockController::class);
+
+    Route::resource('stock-movements', StockMovementController::class);
+
+    Route::get('/product-search', [ProductController::class, 'searchProducts'])->name('products.search');
+
+    Route::prefix('operation')->group(function () {
+        Route::get('/achat', [StockMovementController::class, 'createIncoming'])->name('stocks.incoming.create');
+        Route::get('/vente', [StockMovementController::class, 'createOutgoing'])->name('stocks.outgoing.create');
+        Route::get('/trans', [StockMovementController::class, 'createTransfer'])->name('stocks.transfer.create');
+
+        // Routes pour l'ajout des produits aux mouvements
+        Route::get('/{movement}/add-products', [StockMovementController::class, 'addProducts'])->name('stock-movements.add-products');
+        Route::post('/{movement}/complete', [StockMovementController::class, 'completeMovement'])->name('stock-movements.complete');
+        // Routes pour stocker les mouvements
+        Route::post('/incoming', [StockMovementController::class, 'storeIncoming'])->name('stocks.incoming.store');
+        Route::post('/outgoing', [StockMovementController::class, 'storeOutgoing'])->name('stocks.outgoing.store');
+        Route::post('/transfer', [StockMovementController::class, 'storeTransfer'])->name('stocks.transfer.store');
+    });
 });
 
 require __DIR__.'/auth.php';

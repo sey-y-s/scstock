@@ -2,19 +2,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
 export default function Show({ auth, product }) {
-    const formatQuantity = (quantity) => {
-        const whole = Math.floor(quantity);
-        const fraction = quantity - whole;
-        
-        if (fraction === 0) return `${whole}`;
-        
-        let fractionText = '';
-        if (Math.abs(fraction - 0.125) < 0.01) fractionText = '1/8';
-        else if (Math.abs(fraction - 0.250) < 0.01) fractionText = '1/4';
-        else if (Math.abs(fraction - 0.500) < 0.01) fractionText = '1/2';
-        
-        return fractionText ? `${whole} ${fractionText}` : quantity.toFixed(3);
-    };
 
     const totalStock = product.stocks?.reduce((sum, stock) => sum + parseFloat(stock.quantity), 0) || 0;
 
@@ -52,8 +39,8 @@ export default function Show({ auth, product }) {
                                 {/* Colonne gauche - Image et infos principales */}
                                 <div className="lg:col-span-1">
                                     {product.image_url ? (
-                                        <img 
-                                            src={product.image_url} 
+                                        <img
+                                            src={product.image_url}
                                             alt={product.name}
                                             className="w-full h-64 object-contain rounded-lg shadow-md"
                                         />
@@ -76,11 +63,11 @@ export default function Show({ auth, product }) {
                                             <span className={`text-lg font-bold ${
                                                 product.is_low_stock ? 'text-red-600' : 'text-green-600'
                                             }`}>
-                                                {formatQuantity(totalStock)}
+                                                {totalStock}
                                             </span>
                                         </div>
                                         <div className="text-sm text-gray-600 mt-1">
-                                            Alerte: {formatQuantity(product.low_stock_alert)} {product.packaging_type?.name.toLowerCase()}
+                                            Alerte: {product.low_stock_alert} {product.packaging_type?.name.toLowerCase()}
                                         </div>
                                     </div>
                                 </div>
@@ -109,8 +96,8 @@ export default function Show({ auth, product }) {
                                                 <label className="block text-sm font-medium text-gray-700">Statut</label>
                                                 <p className="mt-1">
                                                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                        product.is_active 
-                                                            ? 'bg-green-100 text-green-800' 
+                                                        product.is_active
+                                                            ? 'bg-green-100 text-green-800'
                                                             : 'bg-red-100 text-red-800'
                                                     }`}>
                                                         {product.is_active ? 'Actif' : 'Inactif'}
@@ -144,11 +131,11 @@ export default function Show({ auth, product }) {
                                                             </div>
                                                         </div>
                                                         <div className={`text-lg font-semibold ${
-                                                            parseFloat(stock.quantity) <= product.low_stock_alert 
-                                                                ? 'text-red-600' 
+                                                            parseFloat(stock.quantity) <= product.low_stock_alert
+                                                                ? 'text-red-600'
                                                                 : 'text-green-600'
                                                         }`}>
-                                                            {formatQuantity(stock.quantity)} {product.packaging_type?.name.toLowerCase()}
+                                                            {stock.quantity} {product.packaging_type?.name.toLowerCase()}
                                                         </div>
                                                     </div>
                                                 ))}

@@ -13,18 +13,10 @@ return new class extends Migration
     {
         Schema::create('stock_movement_items', function (Blueprint $table) {
             $table->id();
-            // Clé étrangère vers le mouvement de stock
             $table->foreignId('stock_movement_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained();
-            
-            // Quantité dans l'unité de base
-            $table->integer('quantity_in_base_unit');
-            
-            // Quantité et unité saisies par l'utilisateur
-            $table->integer('entered_quantity');
-            $table->string('entered_unit');
-
-            $table->integer('price')->nullable();
+            $table->decimal('quantity', 12, 2);
+            $table->integer('unit_price')->default(0);
             $table->timestamps();
         });
     }

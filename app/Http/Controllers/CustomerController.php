@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -27,7 +28,21 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'contact_email' => 'nullable|email',
+            'contact_phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string'
+        ]);
+
+        $customer = Customer::create($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json($customer);
+        }
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Client créé avec succès.');
     }
 
     /**

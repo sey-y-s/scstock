@@ -32,15 +32,27 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
                                 <NavLink
                                     href={route('products.index')}
-                                    active={route().current('products.index')}
+                                    active={route().current('products.*')}
                                 >
                                     Produits
                                 </NavLink>
                                 <NavLink
                                     href={route('stock-movements.index')}
-                                    active={route().current('stock-movements.index')}
+                                    active={route().current('stock-movements.*')}
                                 >
                                     Mouvements
+                                </NavLink>
+                                <NavLink
+                                    href={route('stocks.index')}
+                                    active={route().current('stocks.*')}
+                                >
+                                    Stocks
+                                </NavLink>
+                                <NavLink
+                                    href={route('suppliers.index')}
+                                    active={route().current('suppliers.*')}
+                                >
+                                    Fournisseurs
                                 </NavLink>
 
                                 {/* <NavLink
@@ -48,12 +60,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('categories.index')}
                                 >
                                     Catégories
-                                </NavLink>
-                                <NavLink
-                                    href={route('stocks.index')}
-                                    active={route().current('stocks.index')}
-                                >
-                                    Stocks
                                 </NavLink>
                                 <NavLink
                                     href={route('entries.index')}
