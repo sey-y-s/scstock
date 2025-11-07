@@ -28,4 +28,18 @@ class Warehouse extends Model
     {
         return $this->hasMany(Stock::class);
     }
+
+    public static function generateCode($type)
+    {
+        $prefix = $type === 'depot' ? 'DPT' : 'PDV';
+        $latestWarehouse = self::where('type', $type)->latest('created_at')->first();
+
+        if (!$latestWarehouse) {
+            return $prefix . '01';
+        }
+
+        $lastCode = $latestWarehouse->code;
+        $number = (int) substr($lastCode, 3) + 1;
+        return $prefix . str_pad($number, 2, '0', STR_PAD_LEFT);
+    }
 }

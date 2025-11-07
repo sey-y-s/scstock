@@ -53,11 +53,25 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    // public function show(string $id)
+    // {
+    //     $supplier = Supplier::find($id);
+    //     return Inertia::render('Suppliers/Show', [
+    //         'supplier'=> $supplier,
+    //     ]);
+    // }
+    public function show(Supplier $supplier)
     {
-        $supplier = Supplier::find($id);
         return Inertia::render('Suppliers/Show', [
-            'supplier'=> $supplier,
+            'supplier' => $supplier,
+            'recentMovements' => $supplier->recentMovements(10),
+            'stats' => [
+                'total_transactions' => $supplier->total_transactions,
+                'last_transaction' => $supplier->movements()
+                    ->where('status', 'completed')
+                    ->orderBy('created_at', 'desc')
+                    ->first()?->created_at,
+            ]
         ]);
     }
 

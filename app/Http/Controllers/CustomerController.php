@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Customers/Index', [
+            'customers' => Customer::all(),
+        ]);
     }
 
     /**
@@ -20,7 +23,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Customers/Create', [
+            'customers' => Customer::all(),
+        ]);
     }
 
     /**
@@ -48,9 +53,26 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    // public function show(string $id)
+    // {
+    //     $customer = Customer::find($id);
+    //     return Inertia::render('Customers/Show', [
+    //         'customer'=> $customer,
+    //     ]);
+    // }
+    public function show(Customer $customer)
     {
-        //
+        return Inertia::render('Customers/Show', [
+            'customer' => $customer,
+            'recentMovements' => $customer->recentMovements(10),
+            'stats' => [
+                'total_transactions' => $customer->total_transactions,
+                'last_transaction' => $customer->movements()
+                    ->where('status', 'completed')
+                    ->orderBy('created_at', 'desc')
+                    ->first()?->created_at,
+            ]
+        ]);
     }
 
     /**
@@ -58,7 +80,10 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $customer = Customer::find($id);
+        return Inertia::render('Customers/Edit', [
+            'customer'=> $customer,
+        ]);
     }
 
     /**
@@ -66,7 +91,17 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'contact_email' => 'nullable|email',
+            'contact_phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string'
+        ]);
+        $customer = Customer::find($id);
+        $customer->update($validated);
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Client créé avec succès.');
     }
 
     /**
@@ -74,6 +109,9 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = Customer::find($id);
+        $customer->delete();
+        return redirect()->route('customers.index')
+            ->with('success','Client supprimé avec succès.');
     }
 }

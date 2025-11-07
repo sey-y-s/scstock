@@ -8,6 +8,11 @@ class Stock extends Model
 {
     protected $fillable = ['product_id', 'warehouse_id', 'quantity'];
 
+
+    protected $casts = [
+        'quantity' => 'decimal:2',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -16,5 +21,10 @@ class Stock extends Model
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function getQuantityAttribute($value)
+    {
+        return (float) $value;
     }
 }

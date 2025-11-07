@@ -248,7 +248,7 @@ export default function Show({ auth, movement }) {
                                     </div>
 
                                     {/* Impact sur le stock */}
-                                    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                                    {/* <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Impact sur le stock</h3>
                                         <div className="space-y-3 text-sm">
                                             {movement.type === 'in' && (
@@ -264,7 +264,7 @@ export default function Show({ auth, movement }) {
                                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                                     </svg>
-                                                    Diminution du stock du dépôt {movement.from_warehouse?.name}
+                                                    Diminution du stock de {movement.from_warehouse?.name}
                                                 </div>
                                             )}
                                             {movement.type === 'transfer' && (
@@ -284,7 +284,7 @@ export default function Show({ auth, movement }) {
                                                 </div>
                                             )}
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     {/* Actions rapides */}
                                     <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
@@ -299,15 +299,15 @@ export default function Show({ auth, movement }) {
                                                 </svg>
                                                 Modifier ce mouvement
                                             </Link>
-                                            <button
-                                                onClick={() => window.print()}
+                                            <Link
+                                                href={route('pdf.stock-movement.preview', movement)}
                                                 className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                                             >
                                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                                 </svg>
-                                                Imprimer
-                                            </button>
+                                                PDF Facture
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

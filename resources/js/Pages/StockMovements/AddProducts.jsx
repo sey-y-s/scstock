@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import ProductSearch from '@/Components/ProductSearch';
+import ProductSearchWithCart from '@/Components/ProductSearchWithCart';
 
 export default function AddProducts({ auth, movement, warehouseId, existingItems }) {
     const [cart, setCart] = useState(existingItems);
@@ -153,7 +153,7 @@ export default function AddProducts({ auth, movement, warehouseId, existingItems
                     </div>
 
                     {/* COMPOSANT RECHERCHE + PANIER */}
-                    <ProductSearch
+                    <ProductSearchWithCart
                         onCartUpdate={setCart}
                         warehouseId={warehouseId}
                         movementType={movement.type}

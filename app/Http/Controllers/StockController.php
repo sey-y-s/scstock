@@ -12,61 +12,55 @@ class StockController extends Controller
 {
     public function index(Request $request)
     {
-        // Filtres possibles
-        $warehouseId = $request->get('warehouse_id');
-        $productId = $request->get('product_id');
-        $stockLevel = $request->get('stock_level'); // low, normal, out
+        $query = Stock::with([
+            'product' => function($q) {
+                $q->select('id', 'reference', 'name', 'image_url', 'low_stock_alert')
+                    ->with('packagingType:id,name,code');
+            },
+            'warehouse' => function($q) {
+                $q->select('id', 'name', 'type', 'code');
+            }
+        ])->latest('updated_at');
 
-        $query = Stock::with(['product.packagingType', 'product.category', 'warehouse'])
-            ->join('products', 'stocks.product_id', '=', 'products.id')
-            ->select('stocks.*');
-
-        // Filtre par entrepôt
-        if ($warehouseId) {
-            $query->where('stocks.warehouse_id', $warehouseId);
+        // Filtre entrepôt
+        if ($request->warehouse_id) {
+            $query->where('warehouse_id', $request->warehouse_id);
         }
 
-        // Filtre par produit
-        if ($productId) {
-            $query->where('stocks.product_id', $productId);
+        // Filtre produit
+        if ($request->product_id) {
+            $query->where('product_id', $request->product_id);
         }
 
-        // Filtre par niveau de stock
-        if ($stockLevel) {
-            switch ($stockLevel) {
-                case 'low':
-                    $query->whereRaw('stocks.quantity <= products.low_stock_alert');
-                    break;
-                case 'out':
-                    $query->where('stocks.quantity', '<=', 0);
-                    break;
-                case 'normal':
-                    $query->whereRaw('stocks.quantity > products.low_stock_alert');
-                    break;
+        // Filtre niveau de stock
+        if ($request->stock_level) {
+            if ($request->stock_level === 'low') {
+                $query->where('quantity', '>', 0)
+                    ->whereRaw('quantity <= (SELECT low_stock_alert FROM products WHERE products.id = stocks.product_id)');
+            } elseif ($request->stock_level === 'out') {
+                $query->where('quantity', '<=', 0);
+            } elseif ($request->stock_level === 'normal') {
+                $query->whereRaw('quantity > (SELECT low_stock_alert FROM products WHERE products.id = stocks.product_id)');
             }
         }
 
-        $stocks = $query->orderBy('products.name')
-            ->paginate(25)
-            ->withQueryString();
+        $stocks = $query->paginate(25);
 
         return Inertia::render('Stocks/Index', [
             'stocks' => $stocks,
-            'warehouses' => Warehouse::where('is_active', true)->get(),
-            'products' => Product::with(['category'])->where('is_active', true)->get(),
-            'filters' => [
-                'warehouse_id' => $warehouseId,
-                'product_id' => $productId,
-                'stock_level' => $stockLevel,
-            ]
+            'warehouses' => Warehouse::select('id', 'name', 'type')->get(),
+            'products' => Product::select('id', 'reference', 'name')->limit(50)->get(), // Réduit pour performance
+            'filters' => $request->all()
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $id = $request->warehouse_id;
         return Inertia::render('Stocks/Create', [
             'products' => Product::with(['packagingType'])->where('is_active', true)->get(),
             'warehouses' => Warehouse::where('is_active', true)->get(),
+            'id' => $id,
         ]);
     }
 

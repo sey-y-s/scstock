@@ -4,9 +4,9 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function Show({ auth, stock, recentMovements }) {
     const getStockStatus = () => {
-        if (stock.quantity <= 0) {
+        if (parseFloat(stock.quantity) <= 0) {
             return { label: 'Rupture', color: 'red', bgColor: 'red-100', textColor: 'red-800' };
-        } else if (stock.quantity <= stock.product.low_stock_alert) {
+        } else if (parseFloat(stock.quantity) <= parseFloat(stock.product.low_stock_alert)) {
             return { label: 'Faible', color: 'orange', bgColor: 'orange-100', textColor: 'orange-800' };
         } else {
             return { label: 'Normal', color: 'green', bgColor: 'green-100', textColor: 'green-800' };
@@ -110,7 +110,7 @@ export default function Show({ auth, stock, recentMovements }) {
                                             </div>
                                             <div className="text-center">
                                                 <div className={`text-3xl font-bold ${
-                                                    stock.quantity <= stock.product.low_stock_alert ? 'text-orange-500' : 'text-green-500'
+                                                    parseFloat(stock.quantity) <= parseFloat(stock.product.low_stock_alert) ? 'text-orange-500' : 'text-green-500'
                                                 }`}>
                                                     {stock.product.low_stock_alert}
                                                 </div>
@@ -118,11 +118,11 @@ export default function Show({ auth, stock, recentMovements }) {
                                             </div>
                                             <div className="text-center">
                                                 <div className={`text-3xl font-bold ${
-                                                    stock.quantity > stock.product.low_stock_alert ? 'text-green-500' :
-                                                    stock.quantity > 0 ? 'text-orange-500' : 'text-red-500'
+                                                    parseFloat(stock.quantity) > parseFloat(stock.product.low_stock_alert) ? 'text-green-500' :
+                                                    parseFloat(stock.quantity) > 0 ? 'text-orange-500' : 'text-red-500'
                                                 }`}>
-                                                    {stock.quantity > stock.product.low_stock_alert ? '✓' :
-                                                     stock.quantity > 0 ? '⚠️' : '✗'}
+                                                    {parseFloat(stock.quantity) > parseFloat(stock.product.low_stock_alert) ? '✓' :
+                                                     parseFloat(stock.quantity) > 0 ? '⚠️' : '✗'}
                                                 </div>
                                                 <div className="text-sm text-gray-600 mt-1">Statut</div>
                                             </div>

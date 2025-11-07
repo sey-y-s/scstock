@@ -54,25 +54,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Fournisseurs
                                 </NavLink>
-
-                                {/* <NavLink
-                                    href={route('categories.index')}
-                                    active={route().current('categories.index')}
+                                <NavLink
+                                    href={route('customers.index')}
+                                    active={route().current('customers.*')}
                                 >
-                                    Catégories
+                                    Clients
                                 </NavLink>
                                 <NavLink
-                                    href={route('entries.index')}
-                                    active={route().current('entries.index')}
+                                    href={route('warehouses.index')}
+                                    active={route().current('warehouses.*')}
                                 >
-                                    Entrées
+                                    Entrepôts
                                 </NavLink>
-                                <NavLink
-                                    href={route('exits.index')}
-                                    active={route().current('exits.index')}
-                                >
-                                    Sorties
-                                </NavLink> */}
                             </div>
                         </div>
 

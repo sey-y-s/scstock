@@ -97,7 +97,7 @@ export default function Edit({ auth, stock, products, warehouses }) {
                                     </label>
                                     <input
                                         type="number"
-                                        step="0.125"
+                                        step="0.25"
                                         min="0"
                                         value={data.quantity}
                                         onChange={e => setData('quantity', parseFloat(e.target.value) || 0)}
@@ -105,7 +105,7 @@ export default function Edit({ auth, stock, products, warehouses }) {
                                         required
                                     />
                                     <p className="text-xs text-gray-500 mt-1">
-                                        Supporte les fractions: 1, 1/2, 1/4, 1/8
+                                        Supporte les fractions
                                     </p>
                                     {errors.quantity && (
                                         <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>

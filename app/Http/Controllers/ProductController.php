@@ -167,7 +167,6 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'packaging_type' => $product->packagingType->name,
                 'purchase_price' => $product->purchase_price,
-                'priceB' => $product->priceB,
                 'image_url' => $product->image_url,
                 'current_stock' => $currentStock,
                 'available' => $movementType === 'in' ? true : $currentStock > 0,

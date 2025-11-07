@@ -35,7 +35,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                     <h1 className="text-2xl font-bold">Modifier le produit</h1>
                                     <p className="text-gray-600 mt-1">Réf: {product.reference}</p>
                                 </div>
-                                <Link 
+                                <Link
                                     href={route('products.show', product.id)}
                                     className="text-gray-600 hover:text-gray-900"
                                 >
@@ -173,7 +173,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                         />
                                         <p className="text-xs text-gray-500 mt-1">
-                                            Supporte les fractions: 1, 1/2, 1/4, 1/8
+                                            Supporte les fractions
                                         </p>
                                     </div>
                                     {errors.low_stock_alert && (
@@ -186,13 +186,13 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                     <label className="block text-sm font-medium text-gray-700">
                                         Image du produit
                                     </label>
-                                    
+
                                     {/* Image actuelle */}
                                     {product.image_url && (
                                         <div className="mt-2 mb-4">
                                             <p className="text-sm text-gray-600 mb-2">Image actuelle:</p>
-                                            <img 
-                                                src={product.image_url} 
+                                            <img
+                                                src={product.image_url}
                                                 alt={product.name}
                                                 className="h-32 w-32 object-cover rounded border"
                                             />
@@ -206,14 +206,14 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                         onChange={handleImageChange}
                                         className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                                     />
-                                    
+
                                     {/* Aperçu nouvelle image */}
                                     {data.image && (
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-600 mb-2">Nouvelle image:</p>
-                                            <img 
-                                                src={URL.createObjectURL(data.image)} 
-                                                alt="Aperçu" 
+                                            <img
+                                                src={URL.createObjectURL(data.image)}
+                                                alt="Aperçu"
                                                 className="h-32 w-32 object-cover rounded border"
                                             />
                                         </div>
@@ -222,7 +222,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                     {errors.image && (
                                         <p className="text-red-500 text-sm mt-1">{errors.image}</p>
                                     )}
-                                    
+
                                     {!data.image && !product.image_url && (
                                         <p className="text-xs text-gray-500 mt-1">
                                             Aucune image actuelle. Téléchargez une image pour ce produit.

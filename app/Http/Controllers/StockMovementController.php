@@ -187,7 +187,8 @@ class StockMovementController extends Controller
                     'image_url' => $item->product->image_url,
                     'quantity' => floatval($item->quantity),
                     'unit_price' => $item->unit_price,
-                    'current_stock' => $stock ? floatval($stock->quantity) : 0
+                    'current_stock' => $stock ? floatval($stock->quantity) : 0,
+                    'available' => $item->product->is_active,
                 ];
             })
         ]);
@@ -384,12 +385,30 @@ class StockMovementController extends Controller
 
     public function edit(StockMovement $stockMovement)
     {
+        $movement = $stockMovement->load(['items.product.packagingType']);
+
         return Inertia::render('StockMovements/Edit', [
-            'movement' => $stockMovement->load(['items.product.packagingType']),
+            'movement' => $movement->load(['fromWarehouse', 'toWarehouse', 'supplier', 'customer']),
             'products' => Product::with(['packagingType'])->where('is_active', true)->get(),
             'warehouses' => Warehouse::where('is_active', true)->get(),
             'suppliers' => Supplier::where('is_active', true)->get(),
             'customers' => Customer::where('is_active', true)->get(),
+            'existingItems' => $movement->items->map(function($item) use ($movement) {
+                $warehouseId = $this->getSearchWarehouseId($movement);
+                $stock = $item->product->stocks->where('warehouse_id', $warehouseId)->first();
+
+                return [
+                    'product_id' => $item->product_id,
+                    'reference' => $item->product->reference,
+                    'name' => $item->product->name,
+                    'packaging_type' => $item->product->packagingType->name,
+                    'image_url' => $item->product->image_url,
+                    'quantity' => floatval($item->quantity),
+                    'unit_price' => $item->unit_price,
+                    'current_stock' => $stock ? floatval($stock->quantity) : 0,
+                    'available' => $item->product->is_active,
+                ];
+            })
         ]);
     }
 

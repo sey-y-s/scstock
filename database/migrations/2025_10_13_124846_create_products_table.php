@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('product_categories');
             $table->foreignId('packaging_type_id')->constrained('packaging_types');
             $table->integer('purchase_price')->default(0);
-            $table->decimal('low_stock_alert', 8, 2)->default(5.00); // pour les fractions
+            $table->decimal('low_stock_alert', 8, 2)->default(5); // pour les fractions
             $table->string('image_url')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

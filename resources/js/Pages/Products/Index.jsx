@@ -1,7 +1,13 @@
+import ProductSearchGeneric from '@/Components/ProductSearchGeneric';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
 export default function ProductsIndex({ auth, products }) {
+
+    // Redirection vers la page Show du produit
+    const handleProductSelect = (product) => {
+        router.visit(`/products/${product.id}`);
+    };
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Produits" />
@@ -12,15 +18,23 @@ export default function ProductsIndex({ auth, products }) {
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Gestion des Produits</h1>
-                                <Link 
+
+                                <Link
                                     href={route('products.create')}
                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                                 >
                                     Nouveau Produit
                                 </Link>
                             </div>
-                            
-                            <div className="overflow-x-auto">
+
+
+                            <ProductSearchGeneric
+                                onProductSelect={handleProductSelect}
+                                placeholder="Rechercher un produit pour voir ses détails..."
+                                showStockInfo={true}
+                            />
+
+                            <div className="overflow-x-auto mt-8">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
@@ -55,8 +69,8 @@ export default function ProductsIndex({ auth, products }) {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         {product.image_url && (
-                                                            <img 
-                                                                src={product.image_url} 
+                                                            <img
+                                                                src={product.image_url}
                                                                 alt={product.name}
                                                                 className="h-10 w-10 rounded-full object-cover mr-3"
                                                             />

@@ -2,10 +2,10 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 
-export default function Create({ auth, products, warehouses }) {
+export default function Create({ auth, products, warehouses, id }) {
     const { data, setData, errors, post, processing } = useForm({
         product_id: '',
-        warehouse_id: '',
+        warehouse_id: id ? id : '',
         quantity: 0,
     });
 

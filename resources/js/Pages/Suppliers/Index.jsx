@@ -3,14 +3,6 @@ import { Head, Link } from '@inertiajs/react';
 
 export default function Index({ auth, suppliers }) {
 
-    const getStatusColor = (status) => {
-        const colors = {
-            '1': 'bg-green-100 text-green-800',
-            '0': 'bg-red-100 text-red-800'
-        };
-        return colors[status] || 'bg-gray-100 text-gray-800';
-    };
-
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Fournisseurs" />
@@ -63,7 +55,11 @@ export default function Index({ auth, suppliers }) {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(supplier.is_active)}`}>
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                        supplier.is_active
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : 'bg-red-100 text-red-800'
+                                                    }`}>
                                                         {supplier.is_active ? 'Actif' : 'Inactif' }
                                                     </span>
                                                 </td>
@@ -83,7 +79,12 @@ export default function Index({ auth, suppliers }) {
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-
+                                                    <Link
+                                                        href={route('suppliers.show', supplier.id)}
+                                                        className="text-blue-600 hover:text-blue-900 mr-2"
+                                                    >
+                                                        Voir
+                                                    </Link>
                                                     <Link
                                                         href={route('suppliers.edit', supplier.id)}
                                                         className="text-green-600 hover:text-green-900"
