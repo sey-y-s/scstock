@@ -13,10 +13,12 @@ class ProductController extends Controller
 {
     public function index()
     {
+        // dd(Product::latest()->paginate(10));
         return Inertia::render('Products/Index', [
             'products' => Product::with(['category', 'packagingType', 'stocks'])
                 ->latest()
-                ->get()
+                // ->get()
+                ->paginate(5)
         ]);
     }
 
@@ -156,10 +158,10 @@ class ProductController extends Controller
 
         $products = $products->limit(20)->get()->map(function($product) use ($warehouseId, $movementType) {
             $stock = $warehouseId ?
-                $product->stocks->where('warehouse_id', $warehouseId)->first() :
-                null;
+                $product->stocks->where('warehouse_id', $warehouseId)->first()->quantity :
+                $product->stocks->sum('quantity');
 
-            $currentStock = $stock ? floatval($stock->quantity) : 0;
+            $currentStock = $stock ? floatval($stock) : 0;
 
             return [
                 'id' => $product->id,

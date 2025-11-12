@@ -34,7 +34,7 @@ export default function Index({ auth, warehouses }) {
                                 <div>
                                     <h1 className="text-2xl font-bold text-gray-900">Gestion des Entrepôts</h1>
                                     <p className="text-gray-600 mt-1">
-                                        Vue d'ensemble de tous vos dépôts et points de vente
+                                        Vue d'ensemble de tous vos dépôts
                                     </p>
                                 </div>
                                 <div className="flex space-x-3">
@@ -67,7 +67,7 @@ export default function Index({ auth, warehouses }) {
                                 </div>
                                 <div className="bg-white border border-green-200 rounded-lg p-4 text-center">
                                     <div className="text-2xl font-bold text-green-600">
-                                        {warehouses.filter(w => w.type === 'point_de_vente').length}
+                                        {warehouses.filter(w => w.type === 'pos').length}
                                     </div>
                                     <div className="text-sm text-green-600">Points de vente</div>
                                 </div>
@@ -120,8 +120,8 @@ export default function Index({ auth, warehouses }) {
                                         {/* Statistiques du stock */}
                                         <div className="grid grid-cols-3 gap-2 mb-4">
                                             <div className="text-center p-2 bg-gray-50 rounded">
-                                                <div className="font-bold text-gray-900">{stats.totalStock}</div>
-                                                <div className="text-xs text-gray-600">Total</div>
+                                                <div className="font-bold text-gray-900">{warehouse.total_products}</div>
+                                                <div className="text-xs text-gray-600">Produits</div>
                                             </div>
                                             <div className="text-center p-2 bg-orange-50 rounded">
                                                 <div className="font-bold text-orange-600">{stats.lowStockCount}</div>

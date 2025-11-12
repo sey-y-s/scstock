@@ -2,7 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 
 export default function Edit({ auth, product, categories, packagingTypes }) {
-    const { data, setData, errors, put, processing } = useForm({
+    const { data, setData, errors, post, processing } = useForm({
+        _method: 'PUT',
         reference: product.reference,
         name: product.name,
         description: product.description || '',
@@ -15,7 +16,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('products.update', product.id));
+        post(route('products.update', product.id));
     };
 
     const handleImageChange = (e) => {

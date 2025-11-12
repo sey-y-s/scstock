@@ -162,16 +162,6 @@ export default function Create({ auth }) {
                             </form>
                         </div>
                     </div>
-
-                    {/* Informations supplémentaires */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-blue-900 mb-2">💡 Informations importantes</h3>
-                        <ul className="text-sm text-blue-800 space-y-1">
-                            <li>• Les <strong>dépôts</strong> servent au stockage principal et aux transferts</li>
-                            <li>• Les <strong>points de vente</strong> sont destinés à la vente directe aux clients</li>
-                            <li>• Vous pourrez assigner des gestionnaires à cet entrepôt après sa création</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

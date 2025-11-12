@@ -42,7 +42,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Mouvements
                                 </NavLink>
-                                <NavLink
+                                {/* <NavLink
                                     href={route('stocks.index')}
                                     active={route().current('stocks.*')}
                                 >
@@ -59,7 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('customers.*')}
                                 >
                                     Clients
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink
                                     href={route('warehouses.index')}
                                     active={route().current('warehouses.*')}
@@ -97,17 +97,17 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link
+                                        {/* <Dropdown.Link
                                             href={route('profile.edit')}
                                         >
                                             Profile
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Se déconnecter
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>

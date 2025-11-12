@@ -44,12 +44,12 @@ class StockController extends Controller
             }
         }
 
-        $stocks = $query->paginate(25);
+        $stocks = $query->paginate(10);
 
         return Inertia::render('Stocks/Index', [
             'stocks' => $stocks,
             'warehouses' => Warehouse::select('id', 'name', 'type')->get(),
-            'products' => Product::select('id', 'reference', 'name')->limit(50)->get(), // Réduit pour performance
+            'products' => Product::select('id', 'reference', 'name')->limit(50)->get(), // Réduit pour performance | modifier plus tard
             'filters' => $request->all()
         ]);
     }

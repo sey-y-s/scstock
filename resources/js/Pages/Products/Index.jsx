@@ -4,7 +4,7 @@ import { Head, Link, router } from '@inertiajs/react';
 
 export default function ProductsIndex({ auth, products }) {
 
-    // Redirection vers la page Show du produit
+    // Redirection vers la page Show du produit sélectionné dans la recherche
     const handleProductSelect = (product) => {
         router.visit(`/products/${product.id}`);
     };
@@ -38,14 +38,11 @@ export default function ProductsIndex({ auth, products }) {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Référence
-                                            </th>
+                                            </th> */}
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Produit
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Emballage
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Prix d'achat
@@ -59,37 +56,39 @@ export default function ProductsIndex({ auth, products }) {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {products.map((product) => (
+                                        {products.data.map((product) => (
                                             <tr key={product.id} className={product.is_low_stock ? 'bg-red-50' : ''}>
-                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                {/* <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900">
                                                         {product.reference}
                                                     </div>
-                                                </td>
+                                                </td> */}
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
-                                                        {product.image_url && (
+                                                        {product.image_url ? (
                                                             <img
                                                                 src={product.image_url}
                                                                 alt={product.name}
                                                                 className="h-10 w-10 rounded-full object-cover mr-3"
                                                             />
+                                                        ) : (
+                                                            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                                                <span className="text-gray-500 text-sm md:text-xl">
+                                                                    {product.packaging_type?.name === 'Carton' ? ' 📦' : ' sacs'}
+                                                                </span>
+                                                            </div>
                                                         )}
                                                         <div>
-                                                            <div className="text-sm font-medium text-gray-900">
-                                                                {product.category?.code || '-'} {product.name}
+                                                            <div className="text-gray-500 max-w-xs">
+                                                                {/* {product.category?.code || '-'}  */}
+                                                                {product.reference}
                                                             </div>
-                                                            {product.description && (
-                                                                <div className="text-sm text-gray-500 truncate max-w-xs">
-                                                                    {product.description}
+                                                            {product.name && (
+                                                                <div className="text-sm font-medium truncate text-gray-900">
+                                                                    {product.name}
                                                                 </div>
                                                             )}
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">
-                                                        {product.packaging_type?.name}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -125,6 +124,31 @@ export default function ProductsIndex({ auth, products }) {
                                     </tbody>
                                 </table>
                             </div>
+
+                            {/* Pagination */}
+                            {products.links && (
+                                <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                                    <div className="flex justify-between items-center">
+                                        <div className="text-sm text-gray-700">
+                                            Affichage de {products.from} à {products.to} sur {products.total} résultats
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            {products.links.map((link, index) => (
+                                                <Link
+                                                    key={index}
+                                                    href={link.url || '#'}
+                                                    className={`px-3 py-1 rounded-md ${
+                                                        link.active
+                                                            ? 'bg-blue-500 text-white'
+                                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                    } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

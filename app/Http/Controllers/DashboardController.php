@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Support\Facades\DB;
-use App\Models\Product;
-use App\Models\Warehouse;
 use App\Models\Stock;
+use App\Models\Product;
+use App\Models\Customer;
+use App\Models\Supplier;
+use App\Models\Warehouse;
 use App\Models\StockMovement;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -16,6 +18,8 @@ class DashboardController extends Controller
         // Statistiques principales
         $totalProducts = Product::count();
         $totalWarehouses = Warehouse::count();
+        $totalSuppliers = Supplier::count();
+        $totalCustomers = Customer::count();
         $totalStockValue = (float) $this->calculateTotalStockValue();
         $lowStockProducts = $this->getLowStockProductsCount();
 
@@ -33,6 +37,8 @@ class DashboardController extends Controller
             'stats' => [
                 'totalProducts' => $totalProducts,
                 'totalWarehouses' => $totalWarehouses,
+                'totalSuppliers' => $totalSuppliers,
+                'totalCustomers' => $totalCustomers,
                 'totalStockValue' => number_format($totalStockValue),
                 'lowStockProducts' => $lowStockProducts,
             ],

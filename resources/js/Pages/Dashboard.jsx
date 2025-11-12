@@ -85,18 +85,18 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
 
     const getMovementTypeColor = (type) => {
         switch (type) {
-            case 'entree': return 'text-green-600 bg-green-100';
-            case 'sortie': return 'text-red-600 bg-red-100';
-            case 'transfert': return 'text-blue-600 bg-blue-100';
+            case 'in': return 'text-green-600 bg-green-100';
+            case 'out': return 'text-red-600 bg-red-100';
+            case 'transfer': return 'text-blue-600 bg-blue-100';
             default: return 'text-gray-600 bg-gray-100';
         }
     };
 
     const getMovementTypeIcon = (type) => {
         switch (type) {
-            case 'entree': return '📥';
-            case 'sortie': return '📤';
-            case 'transfert': return '🔄';
+            case 'in': return '📥';
+            case 'out': return '📤';
+            case 'transfer': return '🔄';
             default: return '📦';
         }
     };
@@ -116,7 +116,7 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
                     </div>
 
                     {/* Cartes de statistiques */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                         {/* Produits */}
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <div className="flex items-center">
@@ -202,6 +202,48 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
                                 </Link>
                             </div>
                         </div>
+
+                        {/* Fournisseurs */}
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <div className="flex items-center">
+                                <div className="p-3 rounded-lg bg-teal-100 text-teal-600 mr-4">
+                                    <span className="text-2xl">🏢</span>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Fournisseurs</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats.totalSuppliers}</p>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <Link
+                                    href={route('suppliers.index')}
+                                    className="text-teal-600 hover:text-teal-800 text-sm font-medium"
+                                >
+                                    Gérer les fournisseurs →
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* Clients */}
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <div className="flex items-center">
+                                <div className="p-3 rounded-lg bg-yellow-100 text-yellow-600 mr-4">
+                                    <span className="text-2xl">👥</span>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Clients</p>
+                                    <p className="text-2xl font-bold text-gray-900">{stats.totalCustomers}</p>
+                                </div>
+                            </div>
+                            <div className="mt-4">
+                                <Link
+                                    href={route('customers.index')}
+                                    className="text-yellow-600 hover:text-yellow-800 text-sm font-medium"
+                                >
+                                    Gérer les clients →
+                                </Link>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -279,12 +321,16 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
                                                 <span className="text-sm font-medium text-gray-500 w-6">
                                                     #{index + 1}
                                                 </span>
-                                                {product.image_url && (
+                                                {product.image_url ? (
                                                     <img
                                                         src={product.image_url}
                                                         alt={product.name}
                                                         className="h-8 w-8 rounded-lg object-cover"
                                                     />
+                                                ) : (
+                                                    <div className="h-8 w-8 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+                                                        📦
+                                                    </div>
                                                 )}
                                                 <div>
                                                     <p className="text-sm font-medium text-gray-900">
@@ -299,7 +345,7 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
                                                 <span className="text-sm font-bold text-blue-600">
                                                     {product.movement_count.toLocaleString('fr-FR')}
                                                 </span>
-                                                <p className="text-xs text-gray-500">quantité</p>
+                                                <p className="text-xs text-gray-500">unités</p>
                                             </div>
                                         </div>
                                     ))
