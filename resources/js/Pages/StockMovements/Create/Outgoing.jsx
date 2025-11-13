@@ -53,7 +53,7 @@ export default function Outgoing({ auth, warehouses, customers, reference }) {
                                     </p>
                                 </div>
                                 <Link
-                                    href={route('stock-movements.create')}
+                                    href={route('operations.create')}
                                     className="text-gray-600 hover:text-gray-900"
                                 >
                                     ← Changer de type
@@ -187,7 +187,7 @@ export default function Outgoing({ auth, warehouses, customers, reference }) {
                                 {/* Boutons */}
                                 <div className="flex justify-end space-x-4 pt-6 border-t">
                                     <Link
-                                        href={route('stock-movements.create')}
+                                        href={route('operations.create')}
                                         className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                                     >
                                         Annuler

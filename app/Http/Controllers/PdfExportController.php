@@ -27,7 +27,7 @@ class PdfExportController extends Controller
             'invoice' => $this->getInvoiceInfo($stockMovement),
         ];
 
-        $pdf = Pdf::loadView('pdf.stock-movement-invoice', $data);
+        $pdf = Pdf::loadView('pdf.operation-invoice', $data);
         $fileName = 'Facture-' . $stockMovement->reference . '-' . now()->format('d-m-Y') . '.pdf';
 
         return $pdf->stream($fileName);

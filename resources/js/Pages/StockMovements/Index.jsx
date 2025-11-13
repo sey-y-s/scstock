@@ -116,7 +116,7 @@ export default function Index({ auth, movements }) {
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Mouvements de Stock</h1>
                                 {/* <Link
-                                    href={route('stock-movements.create')}
+                                    href={route('operations.create')}
                                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                                 >
                                     Nouveau Mouvement
@@ -248,14 +248,14 @@ export default function Index({ auth, movements }) {
                                                 <td className="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                                                     {movement.status === 'draft' ? (
                                                         <Link
-                                                            href={route('stock-movements.add-products', movement.id)}
+                                                            href={route('operations.add-products', movement.id)}
                                                             className="text-blue-600 hover:text-blue-900 mr-3"
                                                         >
                                                             Compléter
                                                         </Link>
                                                     ) : (
                                                         <Link
-                                                            href={route('stock-movements.show', movement.id)}
+                                                            href={route('operations.show', movement.id)}
                                                             className="text-blue-600 hover:text-blue-900 mr-3"
                                                         >
                                                             Voir
@@ -263,7 +263,7 @@ export default function Index({ auth, movements }) {
                                                     )}
 
                                                     {/* <Link
-                                                        href={route('stock-movements.edit', movement.id)}
+                                                        href={route('operations.edit', movement.id)}
                                                         className="text-green-600 hover:text-green-900"
                                                     >
                                                         Modifier

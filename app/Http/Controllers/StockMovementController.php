@@ -92,7 +92,7 @@ class StockMovementController extends Controller
             'status' => 'draft'
         ]);
 
-        return redirect()->route('stock-movements.add-products', $movement)
+        return redirect()->route('operations.add-products', $movement)
             ->with('success', 'Approvisionnement créé. Ajoutez maintenant les produits.');
     }
 
@@ -121,7 +121,7 @@ class StockMovementController extends Controller
             'status' => 'draft'
         ]);
 
-        return redirect()->route('stock-movements.add-products', $movement)
+        return redirect()->route('operations.add-products', $movement)
             ->with('success', 'Vente créée. Ajoutez maintenant les produits.');
     }
 
@@ -153,7 +153,7 @@ class StockMovementController extends Controller
             'status' => 'draft'
         ]);
 
-        return redirect()->route('stock-movements.add-products', $movement)
+        return redirect()->route('operations.add-products', $movement)
             ->with('success', 'Transfert créé. Ajoutez maintenant les produits.');
     }
 
@@ -165,7 +165,7 @@ class StockMovementController extends Controller
     {
         // Vérifier que le mouvement est en draft
         if ($movement->status !== 'draft') {
-            return redirect()->route('stock-movements.show', $movement)
+            return redirect()->route('operations.show', $movement)
                 ->with('error', 'Ce mouvement est déjà complété.');
         }
 
@@ -225,7 +225,7 @@ class StockMovementController extends Controller
             // Marquer le mouvement comme complété
             $movement->update(['status' => 'completed']);
 
-            return redirect()->route('stock-movements.show', $movement)
+            return redirect()->route('operations.show', $movement)
                 ->with('success', $this->getSuccessMessage($movement->type));
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -434,7 +434,7 @@ class StockMovementController extends Controller
         $stockMovement->items()->delete();
         $this->processMovementItems($stockMovement, $validated['items'], $stockMovement->type);
 
-        return redirect()->route('stock-movements.show', $stockMovement)
+        return redirect()->route('operations.show', $stockMovement)
             ->with('success', 'Mouvement de stock mis à jour avec succès.');
     }
 
@@ -446,7 +446,7 @@ class StockMovementController extends Controller
         $stockMovement->items()->delete();
         $stockMovement->delete();
 
-        return redirect()->route('stock-movements.index')
+        return redirect()->route('operations.index')
             ->with('success', 'Mouvement de stock supprimé avec succès.');
     }
 

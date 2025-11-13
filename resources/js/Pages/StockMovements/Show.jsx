@@ -63,7 +63,7 @@ export default function Show({ auth, movement }) {
                                 <div className="flex space-x-3">
                                     {movement.status === 'draft' && (
                                         <Link
-                                            href={route('stock-movements.add-products', movement.id)}
+                                            href={route('operations.add-products', movement.id)}
                                             className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                                         >
                                             Ajouter les produits
@@ -71,13 +71,13 @@ export default function Show({ auth, movement }) {
                                     )}
 
                                     <Link
-                                        href={route('stock-movements.edit', movement.id)}
+                                        href={route('operations.edit', movement.id)}
                                         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                                     >
                                         Modifier
                                     </Link>
                                     <Link
-                                        href={route('stock-movements.index')}
+                                        href={route('operations.index')}
                                         className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
                                     >
                                         Retour
@@ -291,7 +291,7 @@ export default function Show({ auth, movement }) {
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                                         <div className="space-y-3">
                                             <Link
-                                                href={route('stock-movements.edit', movement.id)}
+                                                href={route('operations.edit', movement.id)}
                                                 className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                                             >
                                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -300,7 +300,7 @@ export default function Show({ auth, movement }) {
                                                 Modifier ce mouvement
                                             </Link>
                                             <Link
-                                                href={route('pdf.stock-movement.preview', movement)}
+                                                href={route('pdf.operation.preview', movement)}
                                                 className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                                             >
                                                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
