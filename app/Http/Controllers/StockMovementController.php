@@ -25,7 +25,7 @@ class StockMovementController extends Controller
                 'customer',
                 'user',
                 'items.product.packagingType'
-            ])->latest()->get()
+            ])->latest()->paginate(5)
         ]);
     }
 

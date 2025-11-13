@@ -44,7 +44,7 @@ class StockController extends Controller
             }
         }
 
-        $stocks = $query->paginate(10);
+        $stocks = $query->paginate(5);
 
         return Inertia::render('Stocks/Index', [
             'stocks' => $stocks,

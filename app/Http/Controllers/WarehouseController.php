@@ -42,7 +42,7 @@ class WarehouseController extends Controller
                     $query->whereRaw('quantity > (SELECT low_stock_alert FROM products WHERE products.id = stocks.product_id)');
                 }
             })
-            ->paginate(25);
+            ->paginate(5);
 
         return Inertia::render('Warehouses/Show', [
             'warehouse' => $warehouse,

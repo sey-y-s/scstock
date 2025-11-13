@@ -34,13 +34,19 @@ export default function ProductsIndex({ auth, products }) {
                                 </Link>
                             </div>
 
-
+                            {products.data.length === 0 ? (
+                                <div className="text-center text-gray-500">
+                                    Aucun produit trouvé. Veuillez ajouter un nouveau produit.
+                                </div>
+                            ) : (
                             <ProductSearchGeneric
                                 onProductSelect={handleProductSelect}
                                 placeholder="Rechercher un produit pour voir ses détails..."
                                 showStockInfo={true}
                             />
+                            )}
 
+                            {products.data.length > 0 && (
                             <div className="overflow-x-auto mt-8">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
@@ -131,9 +137,10 @@ export default function ProductsIndex({ auth, products }) {
                                     </tbody>
                                 </table>
                             </div>
+                            )}
 
                             {/* Pagination */}
-                            {products.links && (
+                            {products.links && (products.data.length > 3) && (
                                 <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
                                     <div className="flex justify-between items-center">
                                         <div className="text-sm text-gray-700">

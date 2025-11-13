@@ -13,7 +13,6 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // dd(Product::latest()->paginate(10));
         return Inertia::render('Products/Index', [
             'products' => Product::with(['category', 'packagingType', 'stocks'])
                 ->latest()
@@ -120,12 +119,13 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         // Suppression image
-        if ($product->image_url) {
-            $imagePath = str_replace('/storage/', '', $product->image_url);
-            Storage::disk('public')->delete($imagePath);
-        }
+        // if ($product->image_url) {
+        //     $imagePath = str_replace('/storage/', '', $product->image_url);
+        //     Storage::disk('public')->delete($imagePath);
+        // }
 
-        $product->delete();
+        // $product->delete();
+        $product->update(['is_active' => false]);
 
         return redirect()->route('products.index')
             ->with('success', 'Produit supprimé avec succès.');

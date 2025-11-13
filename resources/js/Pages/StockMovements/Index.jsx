@@ -99,6 +99,12 @@ export default function Index({ auth, movements }) {
         return colors[status] || 'bg-gray-100 text-gray-800';
     };
 
+    const translateLabel = (label) => {
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
+        return label;
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Mouvements de Stock" />
@@ -167,6 +173,11 @@ export default function Index({ auth, movements }) {
                             </div>
 
                             {/* Tableau des mouvements */}
+                            {movements.data.length === 0 ? (
+                                <div className="text-center text-gray-500">
+                                    Aucun mouvement de stock trouvé.
+                                </div>
+                            ) : (
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
@@ -195,7 +206,7 @@ export default function Index({ auth, movements }) {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        {movements.map((movement) => (
+                                        {movements.data.map((movement) => (
                                             <tr key={movement.id}>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm font-medium text-gray-900">
@@ -263,6 +274,32 @@ export default function Index({ auth, movements }) {
                                     </tbody>
                                 </table>
                             </div>
+                            )}
+
+                            {/* Pagination */}
+                            {movements.links && (movements.data.length > 3) && (
+                                <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                                    <div className="flex justify-between items-center">
+                                        <div className="text-sm text-gray-700">
+                                            Affichage de {movements.from} à {movements.to} sur {movements.total} résultats
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            {movements.links.map((link, index) => (
+                                                <Link
+                                                    key={index}
+                                                    href={link.url || '#'}
+                                                    className={`px-3 py-1 rounded-md ${
+                                                        link.active
+                                                            ? 'bg-blue-500 text-white'
+                                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                    } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    dangerouslySetInnerHTML={{ __html: translateLabel(link.label) }}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

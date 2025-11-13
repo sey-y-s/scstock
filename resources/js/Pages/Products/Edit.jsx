@@ -272,7 +272,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                             </form>
 
                             {/* Section suppression */}
-                            <div className="mt-8 pt-6 border-t border-gray-200">
+                            {/* <div className="mt-8 pt-6 border-t border-gray-200">
                                 <div className="bg-red-50 border border-red-200 rounded-md p-4">
                                     <h3 className="text-lg font-medium text-red-800 mb-2">Zone de danger</h3>
                                     <p className="text-red-700 text-sm mb-4">
@@ -292,7 +292,7 @@ export default function Edit({ auth, product, categories, packagingTypes }) {
                                         Supprimer ce produit
                                     </Link>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
