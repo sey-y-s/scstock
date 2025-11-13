@@ -63,6 +63,13 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
         }
     };
 
+
+    const translateLabel = (label) => {
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
+        return label;
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Gestion des Stocks" />
@@ -359,7 +366,7 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
                                                         ? 'bg-blue-500 text-white'
                                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                                 } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                                dangerouslySetInnerHTML={{ __html: translateLabel(link.label) }}
                                             />
                                         ))}
                                     </div>

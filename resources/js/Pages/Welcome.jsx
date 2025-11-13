@@ -40,6 +40,13 @@ export default function Welcome({ products, categories, warehouses, filters }) {
         return warehouses.find(w => w.id == localFilters.warehouse_id)?.name;
     };
 
+
+    const translateLabel = (label) => {
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
+        return label;
+    };
+
     return (
         <>
             <Head title="Accueil" />
@@ -262,7 +269,7 @@ export default function Welcome({ products, categories, warehouses, filters }) {
                                             key={index}
                                             href={link.url || '#'}
                                             className={`px-4 py-2 rounded-md ${link.active ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'} ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                            dangerouslySetInnerHTML={{ __html: link.label }}
+                                            dangerouslySetInnerHTML={{ __html: translateLabel(link.label) }}
                                         />
                                     ))}
                                 </nav>

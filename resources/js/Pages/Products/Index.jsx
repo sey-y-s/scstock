@@ -8,6 +8,13 @@ export default function ProductsIndex({ auth, products }) {
     const handleProductSelect = (product) => {
         router.visit(`/products/${product.id}`);
     };
+
+    const translateLabel = (label) => {
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
+        return label;
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Produits" />
@@ -142,7 +149,7 @@ export default function ProductsIndex({ auth, products }) {
                                                             ? 'bg-blue-500 text-white'
                                                             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                                     } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                                    dangerouslySetInnerHTML={{ __html: translateLabel(link.label) }}
                                                 />
                                             ))}
                                         </div>

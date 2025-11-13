@@ -42,6 +42,13 @@ export default function Show({ auth, warehouse, stocks, filters }) {
         }
     };
 
+
+    const translateLabel = (label) => {
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
+        return label;
+    };
+
     // Calcul des statistiques pour cet entrepôt
     const totalProducts = stocks.data.length;
     const totalStock = stocks.data.reduce((sum, stock) => sum + parseFloat(stock.quantity), 0);
@@ -350,7 +357,7 @@ export default function Show({ auth, warehouse, stocks, filters }) {
                                                         ? 'bg-blue-500 text-white'
                                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                                 } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                                dangerouslySetInnerHTML={{ __html: translateLabel(link.label) }}
                                             />
                                         ))}
                                     </div>
