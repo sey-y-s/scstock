@@ -53,7 +53,7 @@ export default function Outgoing({ auth, warehouses, customers, reference }) {
                                     </p>
                                 </div>
                                 <Link
-                                    href={route('operations.create')}
+                                    href={route('operations.index')}
                                     className="text-gray-600 hover:text-gray-900"
                                 >
                                     ← Changer de type

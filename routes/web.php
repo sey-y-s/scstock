@@ -12,7 +12,9 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\PackagingTypeController;
 use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\ProductCategoryController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -38,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('stocks', StockController::class);
+    Route::resource('product-categories', ProductCategoryController::class);
+    Route::resource('packaging-types', PackagingTypeController::class);
 
     Route::resource('operations', StockMovementController::class);
 

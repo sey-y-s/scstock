@@ -10,8 +10,8 @@ export default function ProductsIndex({ auth, products }) {
     };
 
     const translateLabel = (label) => {
-        if (label === 'Next &raquo;') return ' »';
-        if (label === '&laquo; Previous') return '« ';
+        if (label.toLowerCase().includes('next')) return ' »';
+        if (label.toLowerCase().includes('previous')) return '« ';
         return label;
     };
 
