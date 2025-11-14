@@ -269,7 +269,7 @@ export default function Dashboard({ auth, stats, recentMovements, movementsChart
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-lg font-semibold text-gray-900">Mouvements récents</h3>
                                 <Link
-                                    href={route('operations.index')}
+                                    href={route('stock-movements.index')}
                                     className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                                 >
                                     Voir tout →

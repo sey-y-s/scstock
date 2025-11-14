@@ -31,7 +31,7 @@
 
 //     const submit = (e) => {
 //         e.preventDefault();
-//         put(route('operations.update', movement.id));
+//         put(route('stock-movements.update', movement.id));
 //     };
 
 //     const addItem = () => {
@@ -153,7 +153,7 @@
 //                                     </div>
 //                                 </div>
 //                                 <Link
-//                                     href={route('operations.show', movement.id)}
+//                                     href={route('stock-movements.show', movement.id)}
 //                                     className="text-gray-600 hover:text-gray-900"
 //                                 >
 //                                     ← Retour au détail
@@ -575,7 +575,7 @@
 //                                 <div className="flex justify-between items-center pt-8 border-t">
 //                                     <div className="flex space-x-4">
 //                                         <Link
-//                                             href={route('operations.show', movement.id)}
+//                                             href={route('stock-movements.show', movement.id)}
 //                                             className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
 //                                         >
 //                                             Annuler
@@ -612,7 +612,7 @@
 //                                             La suppression d'un mouvement est irréversible et annulera son impact sur les stocks.
 //                                         </p>
 //                                         <Link
-//                                             href={route('operations.destroy', movement.id)}
+//                                             href={route('stock-movements.destroy', movement.id)}
 //                                             method="delete"
 //                                             as="button"
 //                                             className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-150"
@@ -665,7 +665,7 @@ export default function Edit({ auth, movement, existingItems, warehouses, suppli
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('operations.update', movement.id));
+        put(route('stock-movements.update', movement.id));
     };
 
     const handleSupplierChange = (e) => {
@@ -725,7 +725,7 @@ export default function Edit({ auth, movement, existingItems, warehouses, suppli
                                 </div>
                             </div>
                             <Link
-                                href={route('operations.show', movement.id)}
+                                href={route('stock-movements.show', movement.id)}
                                 className="text-gray-600 hover:text-gray-900"
                             >
                                 ← Retour au détail
@@ -878,7 +878,7 @@ export default function Edit({ auth, movement, existingItems, warehouses, suppli
                                 </div>
                                 <div className="flex space-x-4">
                                     <Link
-                                        href={route('operations.show', movement.id)}
+                                        href={route('stock-movements.show', movement.id)}
                                         className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                                     >
                                         Annuler
@@ -901,7 +901,7 @@ export default function Edit({ auth, movement, existingItems, warehouses, suppli
                                     La suppression d'un mouvement est irréversible et annulera son impact sur les stocks.
                                 </p>
                                 <Link
-                                    href={route('operations.destroy', movement.id)}
+                                    href={route('stock-movements.destroy', movement.id)}
                                     method="delete"
                                     as="button"
                                     className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-150"

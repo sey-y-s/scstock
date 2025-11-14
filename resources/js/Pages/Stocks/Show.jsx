@@ -149,7 +149,7 @@ export default function Show({ auth, stock, recentMovements }) {
                                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
                                         <div className="space-y-3">
                                             <Link
-                                                href={route('operations.create')}
+                                                href={route('stock-movements.create')}
                                                 className="w-full flex justify-center items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                                             >
                                                 Créer un mouvement
@@ -196,7 +196,7 @@ export default function Show({ auth, stock, recentMovements }) {
                                             <p className="text-gray-500 text-sm">Aucun mouvement récent</p>
                                         )}
                                         <Link
-                                            href={route('operations.index', { product_id: stock.product_id, warehouse_id: stock.warehouse_id })}
+                                            href={route('stock-movements.index', { product_id: stock.product_id, warehouse_id: stock.warehouse_id })}
                                             className="block text-center text-blue-600 hover:text-blue-800 text-sm mt-3"
                                         >
                                             Voir tous les mouvements

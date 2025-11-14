@@ -179,7 +179,7 @@ export default function Create({ auth }) {
                             {/* Navigation */}
                             <div className="flex justify-between items-center pt-6 border-t border-gray-200">
                                 <Link
-                                    href={route('operations.index')}
+                                    href={route('stock-movements.index')}
                                     className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
                                 >
                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

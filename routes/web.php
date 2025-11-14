@@ -12,9 +12,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\WarehouseController;
-use App\Http\Controllers\PackagingTypeController;
 use App\Http\Controllers\StockMovementController;
-use App\Http\Controllers\ProductCategoryController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -40,10 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('suppliers', SupplierController::class);
     Route::resource('stocks', StockController::class);
-    Route::resource('product-categories', ProductCategoryController::class);
-    Route::resource('packaging-types', PackagingTypeController::class);
 
-    Route::resource('operations', StockMovementController::class);
+    Route::resource('stock-movements', StockMovementController::class);
 
     Route::get('/product-search', [ProductController::class, 'searchProducts'])->name('products.search');
 
@@ -53,8 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/trans', [StockMovementController::class, 'createTransfer'])->name('stocks.transfer.create');
 
         // Routes pour l'ajout des produits aux mouvements
-        Route::get('/{movement}/add-products', [StockMovementController::class, 'addProducts'])->name('operations.add-products');
-        Route::post('/{movement}/complete', [StockMovementController::class, 'completeMovement'])->name('operations.complete');
+        Route::get('/{movement}/add-products', [StockMovementController::class, 'addProducts'])->name('stock-movements.add-products');
+        Route::post('/{movement}/complete', [StockMovementController::class, 'completeMovement'])->name('stock-movements.complete');
         // Routes pour stocker les mouvements
         Route::post('/incoming', [StockMovementController::class, 'storeIncoming'])->name('stocks.incoming.store');
         Route::post('/outgoing', [StockMovementController::class, 'storeOutgoing'])->name('stocks.outgoing.store');
@@ -62,11 +58,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('pdf')->group(function () {
-        Route::get('/operation/{stockMovement}/invoice', [PdfExportController::class, 'stockMovementInvoice'])
-            ->name('pdf.operation.invoice');
+        Route::get('/stock-movement/{stockMovement}/invoice', [PdfExportController::class, 'stockMovementInvoice'])
+            ->name('pdf.stock-movement.invoice');
 
-        Route::get('/operation/{stockMovement}/preview', [PdfExportController::class, 'stockMovementPreview'])
-            ->name('pdf.operation.preview');
+        Route::get('/stock-movement/{stockMovement}/preview', [PdfExportController::class, 'stockMovementPreview'])
+            ->name('pdf.stock-movement.preview');
     });
 });
 

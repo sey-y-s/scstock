@@ -65,8 +65,8 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
 
 
     const translateLabel = (label) => {
-        if (label.toLowerCase().includes('next')) return ' »';
-        if (label.toLowerCase().includes('previous')) return '« ';
+        if (label === 'Next &raquo;') return ' »';
+        if (label === '&laquo; Previous') return '« ';
         return label;
     };
 
@@ -241,16 +241,6 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
                     </div>
 
                     {/* Tableau des stocks */}
-                    {stocks.data.length === 0 ? (
-                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div className="p-6">
-                                <div className="text-center py-12">
-                                    <div className="text-6xl mb-4">🔍</div>
-                                    <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun stock trouvé</h3>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
@@ -360,7 +350,7 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
                         </div>
 
                         {/* Pagination */}
-                        {stocks.links && stocks.data.length > 5 && (
+                        {stocks.links && (
                             <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
                                 <div className="flex justify-between items-center">
                                     <div className="text-sm text-gray-700">
@@ -384,7 +374,6 @@ export default function Index({ auth, stocks, warehouses, products, filters }) {
                             </div>
                         )}
                     </div>
-                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

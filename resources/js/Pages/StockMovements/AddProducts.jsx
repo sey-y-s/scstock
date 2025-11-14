@@ -38,7 +38,7 @@ export default function AddProducts({ auth, movement, warehouseId, existingItems
 
     useEffect(() => {
         if (readyToSubmit) {
-            post(route('operations.complete', movement.id), {
+            post(route('stock-movements.complete', movement.id), {
                 onFinish: () => setReadyToSubmit(false)
             });
         }
@@ -185,7 +185,7 @@ export default function AddProducts({ auth, movement, warehouseId, existingItems
 
                             <div className="flex space-x-4">
                                 <Link
-                                    href={route('operations.show', movement.id)}
+                                    href={route('stock-movements.show', movement.id)}
                                     className="px-8 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 font-medium transition-colors"
                                 >
                                     Annuler

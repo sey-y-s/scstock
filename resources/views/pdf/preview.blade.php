@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <iframe id="pdfFrame" src="{{ route('pdf.operation.invoice', $stockMovement) }}"></iframe>
+    <iframe id="pdfFrame" src="{{ route('pdf.stock-movement.invoice', $stockMovement) }}"></iframe>
 
 </body>
 </html>

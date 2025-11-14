@@ -177,7 +177,7 @@ export default function Show({ auth, customer, recentMovements, stats }) {
                                         )}
                                         <div className="mt-3 flex justify-end">
                                             <Link
-                                                href={route('operations.show', movement.id)}
+                                                href={route('stock-movements.show', movement.id)}
                                                 className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                                             >
                                                 Voir les détails →
@@ -192,7 +192,7 @@ export default function Show({ auth, customer, recentMovements, stats }) {
                         {stats.total_transactions > 10 && (
                             <div className="p-4 border-t border-gray-200 text-center">
                                 <Link
-                                    href={route('operations.index', { customer_id: customer.id })}
+                                    href={route('stock-movements.index', { customer_id: customer.id })}
                                     className="text-blue-600 hover:text-blue-800 font-medium"
                                 >
                                     Voir toutes les {stats.total_transactions} opérations →
