@@ -2,201 +2,208 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Show({ auth, supplier, recentMovements, stats }) {
-    const getMovementTypeLabel = (type) => {
-        const types = {
-            'in': 'Entrée',
-            'out': 'Sortie',
-            'transfer': 'Transfert'
-        };
-        return types[type] || type;
-    };
-
-    const getMovementTypeColor = (type) => {
-        const colors = {
-            'in': 'bg-green-100 text-green-800',
-            'out': 'bg-red-100 text-red-800',
-            'transfer': 'bg-blue-100 text-blue-800'
-        };
-        return colors[type] || 'bg-gray-100 text-gray-800';
-    };
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
+export default function Show({ auth, category, products }) {
+    const getTotalStock = (product) => {
+        return product.stocks.reduce((sum, stock) => sum + parseFloat(stock.quantity), 0);
     };
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title={`Fournisseur - ${supplier.name}`} />
+            <Head title={`Catégorie - ${category.name}`} />
 
             <div className="py-12">
-                <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
-                    {/* En-tête du fournisseur */}
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {/* En-tête de la catégorie */}
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                         <div className="p-6">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="flex items-start space-x-4">
-                                    <div className="p-3 rounded-lg bg-orange-100 text-orange-600">
-                                        <span className="text-2xl">🏢</span>
+                                    <div className="p-3 rounded-lg bg-blue-100 text-blue-600">
+                                        <span className="text-2xl">📁</span>
                                     </div>
                                     <div>
-                                        <h1 className="text-2xl font-bold text-gray-900">{supplier.name}</h1>
-                                        <p className="text-gray-600">{supplier.contact_email}</p>
+                                        <h1 className="text-2xl font-bold text-gray-900">{category.name}</h1>
                                         <div className="flex items-center space-x-4 mt-2">
-                                            <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
-                                                supplier.is_active
-                                                    ? 'bg-green-100 text-green-800'
-                                                    : 'bg-red-100 text-red-800'
-                                            }`}>
-                                                {supplier.is_active ? 'Actif' : 'Inactif'}
+                                            <span className="text-sm font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                                                {category.code}
                                             </span>
-                                            {supplier.contact_phone && (
-                                                <span className="text-sm text-gray-600">
-                                                    📞 {supplier.contact_phone}
-                                                </span>
-                                            )}
+                                            <span className="text-sm text-gray-600">
+                                                {category.products_count} produit(s)
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="flex space-x-3">
                                     <Link
-                                        href={route('suppliers.edit', supplier.id)}
+                                        href={route('product-categories.edit', category.id)}
                                         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                                     >
                                         ✏️ Modifier
                                     </Link>
                                     <Link
-                                        href={route('suppliers.index')}
+                                        href={route('product-categories.index')}
                                         className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
                                     >
-                                        ← Liste Fournisseurs
+                                        ← Liste Catégories
                                     </Link>
                                 </div>
                             </div>
 
-                            {/* Informations de contact */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <div>
-                                    <h3 className="text-sm font-medium text-gray-700 mb-2">Coordonnées</h3>
-                                    <div className="space-y-2">
-                                        {supplier.contact_email && (
-                                            <p className="text-gray-900 flex items-center">
-                                                <span className="mr-2">📧</span>
-                                                {supplier.contact_email}
-                                            </p>
-                                        )}
-                                        {supplier.contact_phone && (
-                                            <p className="text-gray-900 flex items-center">
-                                                <span className="mr-2">📞</span>
-                                                {supplier.contact_phone}
-                                            </p>
-                                        )}
-                                    </div>
+                            {/* Description */}
+                            {category.description && (
+                                <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                                    <h3 className="text-sm font-medium text-gray-700 mb-2">Description</h3>
+                                    <p className="text-gray-900">{category.description}</p>
                                 </div>
-                                {supplier.address && (
-                                    <div>
-                                        <h3 className="text-sm font-medium text-gray-700 mb-2">Adresse</h3>
-                                        <p className="text-gray-900">{supplier.address}</p>
-                                    </div>
-                                )}
-                            </div>
+                            )}
 
-                            {/* Statistiques simples */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Statistiques */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                                    <div className="text-2xl font-bold text-blue-600">
+                                        {products.total}
+                                    </div>
+                                    <div className="text-sm text-blue-600">Produits total</div>
+                                </div>
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                                    <div className="text-2xl font-bold text-green-600">
+                                        {products.data.filter(product => getTotalStock(product) > 0).length}
+                                    </div>
+                                    <div className="text-sm text-green-600">Produits en stock</div>
+                                </div>
                                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
                                     <div className="text-2xl font-bold text-orange-600">
-                                        {stats.total_transactions}
+                                        {products.data.filter(product => getTotalStock(product) === 0).length}
                                     </div>
-                                    <div className="text-sm text-orange-600">Livraisons totales</div>
-                                </div>
-                                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
-                                    <div className="text-sm font-bold text-purple-600">
-                                        {stats.last_transaction ? formatDate(stats.last_transaction) : 'Aucune'}
-                                    </div>
-                                    <div className="text-sm text-purple-600">Dernière livraison</div>
+                                    <div className="text-sm text-orange-600">Produits en rupture</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Opérations récentes */}
+                    {/* Produits de la catégorie */}
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 border-b border-gray-200">
                             <div className="flex justify-between items-center">
                                 <h2 className="text-xl font-bold text-gray-900">
-                                    📦 Dernières livraisons
+                                    📦 Produits de cette catégorie
                                 </h2>
-                                <span className="bg-orange-100 text-orange-800 text-sm font-bold px-3 py-1 rounded-full">
-                                    {recentMovements.length} livraison(s)
+                                <span className="bg-blue-100 text-blue-800 text-sm font-bold px-3 py-1 rounded-full">
+                                    {products.total} produit(s)
                                 </span>
                             </div>
                         </div>
 
-                        {recentMovements.length === 0 ? (
+                        {products.data.length === 0 ? (
                             <div className="p-12 text-center text-gray-500">
                                 <div className="text-6xl mb-4">📭</div>
-                                <p className="text-lg mb-2">Aucune livraison pour ce fournisseur</p>
-                                <p className="text-sm">Les approvisionnements apparaîtront ici après validation</p>
+                                <p className="text-lg mb-2">Aucun produit dans cette catégorie</p>
+                                <p className="text-sm">Les produits apparaîtront ici quand ils seront créés</p>
                             </div>
                         ) : (
-                            <div className="divide-y divide-gray-200">
-                                {recentMovements.map((movement) => (
-                                    <div key={movement.id} className="p-6 hover:bg-gray-50">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center space-x-4">
-                                                <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getMovementTypeColor(movement.type)}`}>
-                                                    {getMovementTypeLabel(movement.type)}
-                                                </span>
-                                                <div>
-                                                    <div className="font-medium text-gray-900">
-                                                        {movement.reference}
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Produit
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Référence
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Emballage
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Stock total
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {products.data.map((product) => (
+                                            <tr key={product.id} className="hover:bg-gray-50">
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center">
+                                                        {product.image_url ? (
+                                                            <img
+                                                                src={product.image_url}
+                                                                alt={product.name}
+                                                                className="h-10 w-10 rounded-full object-cover mr-3"
+                                                            />
+                                                        ) : (
+                                                            <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                                                <span className="text-gray-500 text-sm md:text-xl">
+                                                                    📦
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        <div>
+                                                            <div className="text-sm font-medium text-gray-900">
+                                                                {product.name}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        Vers: {movement.to_warehouse?.name}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900 font-mono">
+                                                        {product.reference}
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-sm text-gray-900">
-                                                    {formatDate(movement.created_at)}
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    Par: {movement.user.name}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {movement.notes && (
-                                            <div className="mt-2 text-sm text-gray-600">
-                                                <strong>Notes:</strong> {movement.notes}
-                                            </div>
-                                        )}
-                                        <div className="mt-3 flex justify-end">
-                                            <Link
-                                                href={route('operations.show', movement.id)}
-                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                                            >
-                                                Voir les détails →
-                                            </Link>
-                                        </div>
-                                    </div>
-                                ))}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="text-sm text-gray-900">
+                                                        {product.packaging_type?.code || '—'}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className={`text-sm font-medium ${
+                                                        getTotalStock(product) > 0
+                                                            ? 'text-green-600'
+                                                            : 'text-red-600'
+                                                    }`}>
+                                                        {getTotalStock(product)}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                    <Link
+                                                        href={route('products.show', product.id)}
+                                                        className="text-blue-600 hover:text-blue-900"
+                                                    >
+                                                        Voir
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         )}
 
-                        {/* Voir toutes les opérations */}
-                        {stats.total_transactions > 10 && (
-                            <div className="p-4 border-t border-gray-200 text-center">
-                                <Link
-                                    href={route('operations.index', { supplier_id: supplier.id })}
-                                    className="text-orange-600 hover:text-orange-800 font-medium"
-                                >
-                                    Voir toutes les {stats.total_transactions} livraisons →
-                                </Link>
+                        {/* Pagination */}
+                        {products.links && products.links.length > 3 && (
+                            <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+                                <div className="flex justify-between items-center">
+                                    <div className="text-sm text-gray-700">
+                                        Affichage de {products.from} à {products.to} sur {products.total} résultats
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        {products.links.map((link, index) => (
+                                            <Link
+                                                key={index}
+                                                href={link.url || '#'}
+                                                className={`px-3 py-1 rounded-md ${
+                                                    link.active
+                                                        ? 'bg-blue-500 text-white'
+                                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                                } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                dangerouslySetInnerHTML={{ __html: link.label }}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>

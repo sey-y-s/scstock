@@ -1,22 +1,50 @@
+import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
-export default function Edit({ auth, supplier }) {
-    const { data, setData, errors, put, processing } = useForm({
-        name: supplier.name,
-        contact_phone: supplier.contact_phone || '223 ',
-        contact_email: supplier.contact_email || '',
-        address: supplier.address || '',
+export default function Edit({ auth, category }) {
+    const [formData, setFormData] = useState({
+        code: category.code,
+        name: category.name,
+        description: category.description || '',
     });
 
-    const submit = (e) => {
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        if (errors[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
+        }
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('suppliers.update', supplier.id));
+        setIsSubmitting(true);
+
+        router.put(route('product-categories.update', category.id), formData, {
+            onSuccess: () => {
+                // Redirection gérée par le controller
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                setIsSubmitting(false);
+            },
+            preserveScroll: true
+        });
     };
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title={`Modifier ${supplier.name}`} />
+            <Head title={`Modifier ${category.name}`} />
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
@@ -24,149 +52,150 @@ export default function Edit({ auth, supplier }) {
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 className="text-2xl font-bold">Modifier le fournisseur</h1>
-                                    <p className="text-gray-600 mt-1">Nom: {supplier.name}</p>
+                                    <h1 className="text-2xl font-bold text-gray-900">Modifier la catégorie</h1>
+                                    <p className="text-gray-600 mt-1">
+                                        Mettre à jour {category.name}
+                                    </p>
+                                </div>
+                                <div className="flex space-x-3">
+                                    <Link
+                                        href={route('product-categories.show', category.id)}
+                                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                                    >
+                                        👁️ Voir
+                                    </Link>
+                                    <Link
+                                        href={route('product-categories.index')}
+                                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                                    >
+                                        ← Retour
+                                    </Link>
                                 </div>
                             </div>
 
-                            <form onSubmit={submit} className="space-y-6">
-
-                                {/* Informations de base */}
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {/* Code */}
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Nom du fournisseur *
+                                        <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Code *
                                         </label>
                                         <input
                                             type="text"
-                                            value={data.name}
-                                            onChange={e => setData('name', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            placeholder='Nom du fournisseur'
+                                            id="code"
+                                            name="code"
+                                            value={formData.code}
+                                            onChange={handleChange}
+                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                                errors.code ? 'border-red-500' : ''
+                                            }`}
+                                            maxLength={10}
+                                        />
+                                        {errors.code && (
+                                            <p className="mt-1 text-sm text-red-600">{errors.code}</p>
+                                        )}
+                                    </div>
+
+                                    {/* Nom */}
+                                    <div>
+                                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Nom *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                                errors.name ? 'border-red-500' : ''
+                                            }`}
                                         />
                                         {errors.name && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Adresse
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.address}
-                                            onChange={e => setData('address', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            placeholder='Adresse du fournisseur'
-                                        />
-                                        {errors.address && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                                            <p className="mt-1 text-sm text-red-600">{errors.name}</p>
                                         )}
                                     </div>
                                 </div>
 
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Contact
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.contact_phone}
-                                            onChange={e => setData('contact_phone', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            placeholder='Numéro de téléphone'
-                                        />
-                                        {errors.contact_phone && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.contact_phone}</p>
-                                        )}
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700">
-                                            Mail
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={data.contact_email}
-                                            onChange={e => setData('contact_email', e.target.value)}
-                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                            placeholder='nom@example.com'
-                                        />
-                                        {errors.contact_email && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.contact_email}</p>
-                                        )}
-                                    </div>
-
-                                </div>
-
-
-                                {/* Statut */}
+                                {/* Description */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Statut du fournisseur
+                                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Description
                                     </label>
-                                    <div className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            id="is_active"
-                                            checked={supplier.is_active}
-                                            onChange={e => setData('is_active', e.target.checked)}
-                                            className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                        />
-                                        <label htmlFor="is_active" className="ml-2 text-sm text-gray-700">
-                                            Fournisseur actif
-                                        </label>
-                                    </div>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        Désactivez pour masquer ce fournisseur des listes sans le supprimer
-                                    </p>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        rows={4}
+                                        className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                            errors.description ? 'border-red-500' : ''
+                                        }`}
+                                    />
+                                    {errors.description && (
+                                        <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                                    )}
                                 </div>
 
                                 {/* Boutons */}
-                                <div className="flex justify-end space-x-4 pt-6 border-t">
+                                <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                                     <Link
-                                        href={route('suppliers.index', supplier.id)}
-                                        className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-150"
+                                        href={route('product-categories.index')}
+                                        className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600"
                                     >
                                         Annuler
                                     </Link>
                                     <button
                                         type="submit"
-                                        disabled={processing}
-                                        className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 transition duration-150"
+                                        disabled={isSubmitting}
+                                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                                     >
-                                        {processing ? 'Mise à jour...' : 'Mettre à jour'}
+                                        {isSubmitting ? (
+                                            <>
+                                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Modification...
+                                            </>
+                                        ) : (
+                                            'Mettre à jour'
+                                        )}
                                     </button>
                                 </div>
                             </form>
-
-                            {/* Section suppression */}
-                            <div className="mt-8 pt-6 border-t border-gray-200">
-                                <div className="bg-red-50 border border-red-200 rounded-md p-4">
-                                    <h3 className="text-lg font-medium text-red-800 mb-2">Zone de danger</h3>
-                                    <p className="text-red-700 text-sm mb-4">
-                                        La suppression d'un fournisseur est irréversible.
-                                    </p>
-                                    <Link
-                                        href={route('suppliers.destroy', supplier.id)}
-                                        method="delete"
-                                        as="button"
-                                        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-150"
-                                        onClick={(e) => {
-                                            if (!confirm('Êtes-vous sûr de vouloir supprimer ce fournisseur ? Cette action est irréversible.')) {
-                                                e.preventDefault();
-                                            }
-                                        }}
-                                    >
-                                        Supprimer ce fournisseur
-                                    </Link>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+                    {/* Section danger */}
+                    {category.products_count === 0 && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mt-6">
+                            <h3 className="text-lg font-medium text-red-900 mb-4">🗑️ Zone dangereuse</h3>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <p className="text-sm text-red-800 mb-2">
+                                        <strong>Supprimer définitivement cette catégorie</strong>
+                                    </p>
+                                    <p className="text-xs text-red-600">
+                                        Cette action est irréversible. La catégorie ne pourra être supprimée que si elle ne contient aucun produit.
+                                    </p>
+                                </div>
+                                <Link
+                                    href={route('product-categories.destroy', category.id)}
+                                    method="delete"
+                                    as="button"
+                                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 text-sm"
+                                    onClick={(e) => {
+                                        if (!confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible.')) {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                >
+                                    Supprimer
+                                </Link>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

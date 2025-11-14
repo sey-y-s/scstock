@@ -40,15 +40,17 @@ class PackagingTypeController extends Controller
 
     public function show(PackagingType $packagingType)
     {
-        $packagingType->load(['products' => function($query) {
-            $query->with(['category', 'stocks.warehouse'])
-                  ->withCount('stocks')
-                  ->orderBy('reference');
-        }]);
+        $packagingType->loadCount('products');
+
+        $products = $packagingType->products()
+            ->with(['stocks.warehouse', 'category'])
+            ->withCount('stocks')
+            ->orderBy('reference')
+            ->paginate(10);
 
         return Inertia::render('PackagingTypes/Show', [
             'packagingType' => $packagingType,
-            'products' => $packagingType->products()->paginate(20),
+            'products' => $products,
         ]);
     }
 

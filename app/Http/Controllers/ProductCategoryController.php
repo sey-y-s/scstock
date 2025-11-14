@@ -40,15 +40,17 @@ class ProductCategoryController extends Controller
 
     public function show(ProductCategory $productCategory)
     {
-        $productCategory->load(['products' => function($query) {
-            $query->with(['stocks.warehouse', 'packagingType'])
-                  ->withCount('stocks')
-                  ->orderBy('reference');
-        }]);
+        $productCategory->loadCount('products');
+
+        $products = $productCategory->products()
+            ->with(['stocks.warehouse', 'packagingType'])
+            ->withCount('stocks')
+            ->orderBy('reference')
+            ->paginate(20);
 
         return Inertia::render('ProductCategories/Show', [
             'category' => $productCategory,
-            'products' => $productCategory->products()->paginate(5),
+            'products' => $products,
         ]);
     }
 

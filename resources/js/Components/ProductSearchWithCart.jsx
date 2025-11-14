@@ -179,7 +179,7 @@ export default function ProductSearchWithCart({
                                                 min="0"
                                                 step="1"
                                                 value={item.unit_price}
-                                                onChange={(e) => updateUnitPrice(item.product_id, parseInt(e.target.value) || 0)}
+                                                onChange={(e) => updateUnitPrice(item.product_id, parseInt(e.target.value))}
                                                 className="w-32 px-3 py-2 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium"
                                             />
                                             <div className="text-xs text-gray-500 mt-1">

@@ -7,7 +7,7 @@ export default function Create({ auth, categories, packagingTypes }) {
         description: '',
         category_id: '',
         packaging_type_id: '',
-        purchase_price: 0,
+        purchase_price: '',
         low_stock_alert: 5,
         image: null,
     });
@@ -31,7 +31,7 @@ export default function Create({ auth, categories, packagingTypes }) {
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Nouveau Produit</h1>
-                                <Link 
+                                <Link
                                     href={route('products.index')}
                                     className="text-gray-600 hover:text-gray-900"
                                 >
@@ -126,7 +126,7 @@ export default function Create({ auth, categories, packagingTypes }) {
                                             type="number"
                                             min="0"
                                             value={data.purchase_price}
-                                            onChange={e => setData('purchase_price', parseInt(e.target.value) || 0)}
+                                            onChange={e => setData('purchase_price', parseInt(e.target.value))}
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                             placeholder="Prix pour un carton/sac/pièce"
                                         />
@@ -172,9 +172,9 @@ export default function Create({ auth, categories, packagingTypes }) {
                                     />
                                     {data.image && (
                                         <div className="mt-2">
-                                            <img 
-                                                src={URL.createObjectURL(data.image)} 
-                                                alt="Aperçu" 
+                                            <img
+                                                src={URL.createObjectURL(data.image)}
+                                                alt="Aperçu"
                                                 className="h-32 w-32 object-cover rounded border"
                                             />
                                         </div>

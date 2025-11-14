@@ -31,35 +31,29 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
+                                    href={route('stock-movements.index')}
+                                    active={route().current('stock-movements.*')}
+                                >
+                                    Mouvements
+                                </NavLink>
+                                <NavLink
                                     href={route('products.index')}
                                     active={route().current('products.*')}
                                 >
                                     Produits
                                 </NavLink>
                                 <NavLink
-                                    href={route('stock-movements.index')}
-                                    active={route().current('stock-movements.*')}
+                                    href={route('product-categories.index')}
+                                    active={route().current('product-categories.*')}
                                 >
-                                    Mouvements
-                                </NavLink>
-                                {/* <NavLink
-                                    href={route('stocks.index')}
-                                    active={route().current('stocks.*')}
-                                >
-                                    Stocks
+                                    Catégories
                                 </NavLink>
                                 <NavLink
-                                    href={route('suppliers.index')}
-                                    active={route().current('suppliers.*')}
+                                    href={route('packaging-types.index')}
+                                    active={route().current('packaging-types.*')}
                                 >
-                                    Fournisseurs
+                                    Emballages
                                 </NavLink>
-                                <NavLink
-                                    href={route('customers.index')}
-                                    active={route().current('customers.*')}
-                                >
-                                    Clients
-                                </NavLink> */}
                                 <NavLink
                                     href={route('warehouses.index')}
                                     active={route().current('warehouses.*')}

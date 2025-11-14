@@ -30,7 +30,7 @@ export default function Create({ auth }) {
         e.preventDefault();
         setIsSubmitting(true);
 
-        router.post(route('product-categories.store'), formData, {
+        router.post(route('packaging-types.store'), formData, {
             onSuccess: () => {
                 // Redirection gérée par le controller
             },
@@ -44,7 +44,7 @@ export default function Create({ auth }) {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Créer une catégorie" />
+            <Head title="Créer un type d'emballage" />
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
@@ -52,13 +52,13 @@ export default function Create({ auth }) {
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <div>
-                                    <h1 className="text-2xl font-bold text-gray-900">Créer une catégorie</h1>
+                                    <h1 className="text-2xl font-bold text-gray-900">Créer un type d'emballage</h1>
                                     <p className="text-gray-600 mt-1">
-                                        Ajouter une nouvelle famille de produits
+                                        Ajouter une nouvelle unité d'emballage (PCS, DZ, FLS, etc.)
                                     </p>
                                 </div>
                                 <Link
-                                    href={route('product-categories.index')}
+                                    href={route('packaging-types.index')}
                                     className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
                                 >
                                     ← Retour
@@ -78,10 +78,10 @@ export default function Create({ auth }) {
                                             name="code"
                                             value={formData.code}
                                             onChange={handleChange}
-                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
                                                 errors.code ? 'border-red-500' : ''
                                             }`}
-                                            placeholder="Ex: DEO, PSA, PARF..."
+                                            placeholder="Ex: PCS, DZ, FLS, CART..."
                                             maxLength={10}
                                         />
                                         {errors.code && (
@@ -103,10 +103,10 @@ export default function Create({ auth }) {
                                             name="name"
                                             value={formData.name}
                                             onChange={handleChange}
-                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                            className={`w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
                                                 errors.name ? 'border-red-500' : ''
                                             }`}
-                                            placeholder="Ex: Déodorants, Parfums sans alcool..."
+                                            placeholder="Ex: Pièces, Douzaines, Flacons..."
                                         />
                                         {errors.name && (
                                             <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -125,10 +125,10 @@ export default function Create({ auth }) {
                                         value={formData.description}
                                         onChange={handleChange}
                                         rows={4}
-                                        className={`w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
+                                        className={`w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
                                             errors.description ? 'border-red-500' : ''
                                         }`}
-                                        placeholder="Description de la catégorie..."
+                                        placeholder="Description du type d'emballage..."
                                     />
                                     {errors.description && (
                                         <p className="mt-1 text-sm text-red-600">{errors.description}</p>
@@ -138,7 +138,7 @@ export default function Create({ auth }) {
                                 {/* Boutons */}
                                 <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                                     <Link
-                                        href={route('product-categories.index')}
+                                        href={route('packaging-types.index')}
                                         className="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600"
                                     >
                                         Annuler
@@ -146,7 +146,7 @@ export default function Create({ auth }) {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                        className="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                                     >
                                         {isSubmitting ? (
                                             <>
@@ -157,13 +157,25 @@ export default function Create({ auth }) {
                                                 Création...
                                             </>
                                         ) : (
-                                            'Créer la catégorie'
+                                            'Créer le type d\'emballage'
                                         )}
                                     </button>
                                 </div>
                             </form>
                         </div>
                     </div>
+
+                    {/* Informations supplémentaires */}
+                    {/* <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mt-6">
+                        <h3 className="text-lg font-medium text-orange-900 mb-2">💡 Types d'emballage courants</h3>
+                        <ul className="text-sm text-orange-800 space-y-1">
+                            <li>• <strong>PCS</strong> - Pièces (unités individuelles)</li>
+                            <li>• <strong>DZ</strong> - Douzaines (lots de 12)</li>
+                            <li>• <strong>FLS</strong> - Flacons (conteneurs liquides)</li>
+                            <li>• <strong>CART</strong> - Cartons (emballages groupés)</li>
+                            <li>• <strong>SAC</strong> - Sacs (emballages en vrac)</li>
+                        </ul>
+                    </div> */}
                 </div>
             </div>
         </AuthenticatedLayout>
